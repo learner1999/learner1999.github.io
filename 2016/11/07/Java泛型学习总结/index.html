@@ -18,7 +18,7 @@
 
 一、泛型是什么泛型允许程序员在强类型程序设计语言中编写代码时定义一些可变部分，类似于 C++ 中模版的概念。
 二、泛型的常见应用在使用 Java Collection 集合类时，会有两种写法，下面以 List 来举例。1234// 第一种写法，不使用泛型，可以向 list 中 add 任意类型的数据，在取出">
-<meta property="og:updated_time" content="2016-11-07T01:02:54.045Z">
+<meta property="og:updated_time" content="2017-03-09T09:03:32.741Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java泛型学习总结">
 <meta name="twitter:description" content="最近在编程中多次遇到泛型，于是去网上找了些资料巩固，同时将一些要点记下，以便将来查阅。
@@ -58,6 +58,8 @@
 				<li><a href="/">主页</a></li>
 	        
 				<li><a href="/tags/java/">Java</a></li>
+	        
+				<li><a href="/tags/计算机网络/">计算机网络</a></li>
 	        
 			</ul>
 		</nav>
@@ -110,6 +112,8 @@
 		        
 					<li><a href="/tags/java/">Java</a></li>
 		        
+					<li><a href="/tags/计算机网络/">计算机网络</a></li>
+		        
 				</ul>
 			</nav>
 			<nav class="header-nav">
@@ -149,6 +153,7 @@
 <h1 id="二、泛型的常见应用"><a href="#二、泛型的常见应用" class="headerlink" title="二、泛型的常见应用"></a>二、泛型的常见应用</h1><p>在使用 <code>Java</code> <code>Collection</code> 集合类时，会有两种写法，下面以 <code>List</code> 来举例。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 第一种写法，不使用泛型，可以向 list 中 add 任意类型的数据，在取出时需要进行向下转型</span></div><div class="line">List list = <span class="keyword">new</span> ArrayList();</div><div class="line">list.add(<span class="string">"hello"</span>);</div><div class="line"><span class="keyword">int</span> i = (<span class="keyword">int</span>) list.get(<span class="number">0</span>);  <span class="comment">// 编译正常，留下隐患，在运行时会抛出 java.lang.ClassCastException 异常</span></div></pre></td></tr></table></figure></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 第二种写法，使用泛型，list 中只能 add 指定的类型及其子类型，否则编译会报错</span></div><div class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">list.add(<span class="string">"hello"</span>); <span class="comment">// 在编译期间就会报错</span></div></pre></td></tr></table></figure>
 <p>泛型的好处，编译时即可发现错误，而不是到运行时才抛出异常。</p>
+<a id="more"></a>
 <h1 id="三、泛型的使用"><a href="#三、泛型的使用" class="headerlink" title="三、泛型的使用"></a>三、泛型的使用</h1><h2 id="1-泛型类"><a href="#1-泛型类" class="headerlink" title="1. 泛型类"></a>1. 泛型类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        Person&lt;String&gt; person = <span class="keyword">new</span> Person&lt;&gt;();  <span class="comment">// 实例化泛型类</span></div><div class="line">        person.setT(<span class="string">"hello"</span>);</div><div class="line">        person.say();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 定义泛型类</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span>&lt;<span class="title">T</span>&gt; </span>&#123;  <span class="comment">// 在类中使用到的泛型类型需要在类名后注明</span></div><div class="line">    <span class="keyword">private</span> T t;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">say</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(t);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getT</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> t;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setT</span><span class="params">(T t)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.t = t;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="2-泛型接口"><a href="#2-泛型接口" class="headerlink" title="2. 泛型接口"></a>2. 泛型接口</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 和泛型类定义基本一样</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Person</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">say</span><span class="params">(T t)</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 泛型接口的实现类</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">Person</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">say</span><span class="params">(T t)</span> </span>&#123;</div><div class="line">        System.out.println(t);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="3-泛型方法"><a href="#3-泛型方法" class="headerlink" title="3. 泛型方法"></a>3. 泛型方法</h2><p>泛型方法并不要求定义在泛型类或泛型接口中，也可以定义在普通类中</p>
@@ -322,7 +327,7 @@ MathJax.Hub.Queue(function() {
     
     	<section class="tools-section tools-section-tag">
     			<div class="widget tagcloud" id="js-tagcloud">
-    				<a href="/tags/java/" style="font-size: 10px;">java</a>
+    				<a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/计算机网络/" style="font-size: 10px;">计算机网络</a>
     			</div>
     	</section>
     

@@ -46,6 +46,8 @@
 	        
 				<li><a href="/tags/java/">Java</a></li>
 	        
+				<li><a href="/tags/计算机网络/">计算机网络</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -97,6 +99,8 @@
 		        
 					<li><a href="/tags/java/">Java</a></li>
 		        
+					<li><a href="/tags/计算机网络/">计算机网络</a></li>
+		        
 				</ul>
 			</nav>
 			<nav class="header-nav">
@@ -138,59 +142,9 @@
 <p>常见的互联网相关协议有 TCP、IP、HTTP、FTP、UDP 等等。</p>
 <h2 id="2-网络分层"><a href="#2-网络分层" class="headerlink" title="2. 网络分层"></a>2. 网络分层</h2><p>TCP/IP 四层模型，将网络从下至上分为数据链路层(Data Link)、传输层(Transport)、网络层(Network)、应用层(Application)。</p>
 <p>ISO 提出的 OSI（Open System Interconnection）模型将网络分为七层，即物理层( Physical )、数据链路层(Data Link)、网络层(Network)、传输层(Transport)、会话层(Session)、表示层(Presentation)和应用层(Application)。</p>
-<h3 id="关于-TCP-IP-4-层和-5-层两种不同的说法，解释如下"><a href="#关于-TCP-IP-4-层和-5-层两种不同的说法，解释如下" class="headerlink" title="关于 TCP/IP 4 层和 5 层两种不同的说法，解释如下"></a>关于 TCP/IP 4 层和 5 层两种不同的说法，解释如下</h3><blockquote>
-<p>TCP/IP 是事实标准，分 4 层。OSI 模型是国际标准，分 7 层。一般把他们综合起来讲，就说是 5 层。只是把网络接口层分开为数据链路层和物理层 2 层了。</p>
-</blockquote>
-<h2 id="3-网络传输的过程"><a href="#3-网络传输的过程" class="headerlink" title="3. 网络传输的过程"></a>3. 网络传输的过程</h2><p>以 HTTP 举例，传输顺序为客户端的应用层 -&gt; 传输层 -&gt; 网络层 -&gt; 链路层，服务器在链路层接收到数据，再向上层发送，从链路层 -&gt; 网络层 -&gt; 传输层 -&gt; 应用层。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/448065-fc896c97de2a706b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="TCP/IP 模型网络通信图"></p>
-<p>在数据传输的过程中，从上层向下层传输的过程中，每经过一层就会被封装（encapsulate）上该层所属的首部信息。相反，从下层向上层传输的过程，则没经过一层就把对应的首部去掉。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/448065-ab6bf5d9505870a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="传输过程中的封装过程"></p>
-<p><img src="http://upload-images.jianshu.io/upload_images/448065-38633790719c5c35.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="另一张封装过程图"></p>
-<h2 id="4-IP-协议"><a href="#4-IP-协议" class="headerlink" title="4. IP 协议"></a>4. IP 协议</h2><p>IP（Internet Protocol）网际协议位于网络层。“IP” 在这里是一种协议的名称，IP 协议中还有一个非常重要的内容，那就是给因特网上的每台计算机和其它设备都规定了一个唯一的地址，叫做 “IP 地址”。</p>
-<p>IP 协议的作用是把各种数据包传送给另外一个接收对象。而要确定数据包传送到哪里，需要两样东西，分别是 IP 地址和 MAC 地址（Media Access Control Address）。</p>
-<blockquote>
-<p>MAC（Media Access Control，介质访问控制）地址，也叫硬件地址，长度是48比特（6字节），由16进制的数字组成，分为前24位和后24位：<br>前24位叫做组织唯一标志符（Organizationally Unique Identifier，即OUI），是由IEEE的注册管理机构给不同厂家分配的代码，区分了不同的厂家。<br>后24位是由厂家自己分配的，称为扩展标识符。同一个厂家生产的网卡中MAC地址后24位是不同的。<br>MAC地址对应于OSI参考模型的第二层数据链路层，工作在数据链路层的交换机维护着计算机MAC地址和自身端口的数据库，交换机根据收到的数据帧中的“目的MAC地址”字段来转发数据帧。</p>
-</blockquote>
-<p>简单来说，MAC 地址就是每一张网卡的身份证号，具有全球唯一性（说是这么说，不过好像还是有重复的情况，不知道厂商要怎么确保每一张网卡的 MAC 地址不相同），网卡的物理地址通常是由网卡生产厂家烧入网卡的 EPROM（通常可以通过程序擦写来进行修改）。</p>
-<h2 id="5-ARP-协议"><a href="#5-ARP-协议" class="headerlink" title="5. ARP 协议"></a>5. ARP 协议</h2><blockquote>
-<p>ARP（Address Resolution Protocol，地址解析协议）是将IP地址解析为以太网MAC地址（或称物理地址）的协议。</p>
-<p>在局域网中，当主机或其它网络设备有数据要发送给另一个主机或设备时，它必须知道对方的网络层地址（即IP地址）。但是仅仅有IP地址是不够的，因为IP数据报文必须封装成帧才能通过物理网络发送，因此发送站还必须有接收站的物理地址（MAC 地址），所以需要一个从IP地址到物理地址的映射。APR就是实现这个功能的协议。</p>
-</blockquote>
-<p>IP 地址转 MAC 地址的工作的流程如下：</p>
-<ol>
-<li>主机 A 先在本地的 ARP 缓存（一张 IP 和 MAC 的对应表）中查找是否存在对应 IP 地址的记录，如果存在，直接取到对应 IP 的 MAC 地址。</li>
-<li>如果主机 A 在 ARP 缓存中没有找到对应记录，就会向本地络中的所有主机发起广播询问，本地网络上的每台主机都接收到 ARP 请求并且检查是否与自己的 IP 地址匹配。如果主机发现请求的 IP 地址与自己的 IP 地址不匹配，它就不会有任何回应。</li>
-<li>主机 B 确定 ARP 请求中的 IP 地址与自己的 IP 地址匹配，则将主机 A 的 IP 地址和 MAC 地址对应记录添加到本地 ARP 缓存中。</li>
-<li>主机 B 将包含其 MAC 地址的 ARP 回复消息直接发送回主机 A。</li>
-<li>当主机 A 收到从主机 B 发来的 ARP 回复的消息时，会向本地的 ARP 缓存中添加主机 B 的 IP 地址与 MAC 地址的对应记录。主机 B 的 MAC 地址确定后，主机 A 就能与主机 B 进行通信了。</li>
-</ol>
-<h3 id="ARP-欺骗攻击"><a href="#ARP-欺骗攻击" class="headerlink" title="ARP 欺骗攻击"></a>ARP 欺骗攻击</h3><blockquote>
-<p>ARP 请求为广播形式发送的，网络上的主机都可以接收到，也可以自主发送ARP应答消息，并且当其他主机收到应答报文时不会检测该报文的真实性就将其记录在本地的MAC地址转换表，这样攻击者就可以向目标主机发送伪 ARP 应答报文，从而篡改本地的MAC地址表。ARP 欺骗可以导致目标计算机与网关通信失败，更会导致通信重定向，所有的数据都会通过攻击者的机器，因此存在极大的安全隐患。</p>
-</blockquote>
-<p>举个栗子来说明 ARP 欺骗：网络中有三台设备，路由器（网关）、主机 A、主机 B，现在主机 A 要访问一个网站，因为处于局域网（内网）之中，访问外网需要经过路由器（网关）来中转，这时候主机 A 希望向网关（假设 IP 地址是 192.168.1.1）发送一些数据，但是主机 A 的本地的 ARP 映射表中不存在 192.168.1.1 这个 IP 地址对应的记录，于是它向整个局域网发送 ARP 广播。如果主机 B 是一个攻击者，它在接收到广播之后，可以主动向主机 B 发送“我的 IP 是 192.168.1.1，对应的 MAC 地址是 XX:XX:XX……”，主机 A 在没有验证信息是否真实的情况下，就将这条 IP 和 MAC 对应记录保存在了本地的 ARP 缓存中，然后向主机 B 发送请求数据，这时就会导致通信失败。如果主机 B 同时还负责重定向主机 A 的请求到真实的网关，那么主机 A 不会出现通信失败（网络请求失败），但是所有通信都会经过主机 B。</p>
-<p>（ps：看到这里有一点感触，想起以前和别人共用网络，经常遭到 ARP 欺骗攻击，就是被人使用 p2p 终结者、聚生网管之类的软件进行限速和断网）</p>
-<h2 id="6-TCP-协议"><a href="#6-TCP-协议" class="headerlink" title="6. TCP 协议"></a>6. TCP 协议</h2><blockquote>
-<p>TCP 位于传输层，提供可靠的字节流服务。</p>
-<p>所谓的字节流服务（Byte Stream Service）是指，为了方便传输，将大块数据分割成以报文段（segment）为单位的数据包进行管理。而可靠的传输服务是指，能够把数据准确可靠地传给对方。</p>
-</blockquote>
-<h3 id="TCP-的三次握手"><a href="#TCP-的三次握手" class="headerlink" title="TCP 的三次握手"></a>TCP 的三次握手</h3><blockquote>
-<p>TCP 的两种标志（flag） —— SYN（synchronize） 和 ACK（acknowledgement）。</p>
-<p>客户端首先发送一个带 SYN 标志的数据包给对方。服务器收到后，回传一个带有 SYN/ACK 标志的数据包以示传达确认信息。最后，客户端再回传一个带 ACK 标志的数据包，代表“握手”结束。</p>
-</blockquote>
-<p><img src="http://upload-images.jianshu.io/upload_images/448065-9c0dcd352a162f00.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="TCP 的三次握手"></p>
-<h3 id="TCP-的四次挥手"><a href="#TCP-的四次挥手" class="headerlink" title="TCP 的四次挥手"></a>TCP 的四次挥手</h3><ol>
-<li>客户端向服务器端发送 FIN，表示数据传输完毕，不会再传输数据，但是服务器端有数据没有传输完，可以继续传输。</li>
-<li>服务器返回 ACK 表示知道了，传输完数据会再发消息给客户端。</li>
-<li>服务器继续传输未传完的数据。</li>
-<li>服务器向客户端发送 FIN，表示数据已经传输完成，准备关闭连接了。</li>
-<li>客户端向服务器发送 ACK，表示知道了，然后进入 TIME_WAIT 状态，以保证服务器成功接收到 ACK，等待时间过去则关闭连接。</li>
-<li>服务器在收到客户端发来的 ACK 之后，关闭连接；如果没有收到，则告知客户端没有接收到确认信息，要求重发。</li>
-</ol>
-<p><img src="http://upload-images.jianshu.io/upload_images/448065-171b9b8d41154826.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="TCP 的四次挥手"></p>
-<h2 id="7-DNS-服务"><a href="#7-DNS-服务" class="headerlink" title="7. DNS 服务"></a>7. DNS 服务</h2><p>我们在浏览网页的时候，通常需要输入网址，例如访问百度，我们就要输入 www.baidu.com 这个网址。上网其实就是我们的计算机和服务器进行数据交换的一个过程，我们需要知道服务器在网络上的位置——也就是 IP 地址，才可以与它连接，进行数据传输。那么计算机是怎么通过网址来获取到服务器的 IP 地址的呢？</p>
-<p>我们可以通过 DNS 服务器来查询 IP 地址，在我们输入网址，敲下回车之后，操作系统会将网站域名发送到本地 DNS 服务器进行查询。（这里省略了查询本地 DNS 缓存的过程以及本地 DNS 服务器查询不到向根域名服务器发送解析过程的情况）</p>
-<h2 id="8-URI-和-URL"><a href="#8-URI-和-URL" class="headerlink" title="8. URI 和 URL"></a>8. URI 和 URL</h2><p>URI 是统一资源标识符 Uniform Resource Identifier 的缩写，URL 是统一资源定位符 Uniform Resource Locator 的缩写，它是一种具体的 URI，不仅标识了一种资源，同时还指明了如何去定位这个资源。</p>
-
+        <p class="article-more-link">
+          <a  href="/2017/03/09/《图解 HTTP》笔记（一）一些网络的基本概念/#more">more >></a>
+        </p>
       
     </div>
     <div class="article-info article-info-index">
@@ -201,7 +155,7 @@
       
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/计算机网络/">计算机网络</a></li></ul>
 	</div>
 
       
@@ -246,18 +200,9 @@
 <h1 id="二、泛型的常见应用"><a href="#二、泛型的常见应用" class="headerlink" title="二、泛型的常见应用"></a>二、泛型的常见应用</h1><p>在使用 <code>Java</code> <code>Collection</code> 集合类时，会有两种写法，下面以 <code>List</code> 来举例。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 第一种写法，不使用泛型，可以向 list 中 add 任意类型的数据，在取出时需要进行向下转型</span></div><div class="line">List list = <span class="keyword">new</span> ArrayList();</div><div class="line">list.add(<span class="string">"hello"</span>);</div><div class="line"><span class="keyword">int</span> i = (<span class="keyword">int</span>) list.get(<span class="number">0</span>);  <span class="comment">// 编译正常，留下隐患，在运行时会抛出 java.lang.ClassCastException 异常</span></div></pre></td></tr></table></figure></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 第二种写法，使用泛型，list 中只能 add 指定的类型及其子类型，否则编译会报错</span></div><div class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">list.add(<span class="string">"hello"</span>); <span class="comment">// 在编译期间就会报错</span></div></pre></td></tr></table></figure>
 <p>泛型的好处，编译时即可发现错误，而不是到运行时才抛出异常。</p>
-<h1 id="三、泛型的使用"><a href="#三、泛型的使用" class="headerlink" title="三、泛型的使用"></a>三、泛型的使用</h1><h2 id="1-泛型类"><a href="#1-泛型类" class="headerlink" title="1. 泛型类"></a>1. 泛型类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        Person&lt;String&gt; person = <span class="keyword">new</span> Person&lt;&gt;();  <span class="comment">// 实例化泛型类</span></div><div class="line">        person.setT(<span class="string">"hello"</span>);</div><div class="line">        person.say();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 定义泛型类</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span>&lt;<span class="title">T</span>&gt; </span>&#123;  <span class="comment">// 在类中使用到的泛型类型需要在类名后注明</span></div><div class="line">    <span class="keyword">private</span> T t;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">say</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(t);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getT</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> t;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setT</span><span class="params">(T t)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.t = t;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="2-泛型接口"><a href="#2-泛型接口" class="headerlink" title="2. 泛型接口"></a>2. 泛型接口</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 和泛型类定义基本一样</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Person</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">say</span><span class="params">(T t)</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 泛型接口的实现类</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">Person</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">say</span><span class="params">(T t)</span> </span>&#123;</div><div class="line">        System.out.println(t);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="3-泛型方法"><a href="#3-泛型方法" class="headerlink" title="3. 泛型方法"></a>3. 泛型方法</h2><p>泛型方法并不要求定义在泛型类或泛型接口中，也可以定义在普通类中</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">say</span><span class="params">(T t)</span> </span>&#123;  <span class="comment">// 在泛型方法中要使用到的泛型类型需要在方法返回类型前注明</span></div><div class="line">        System.out.println(t);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="4-类型擦除"><a href="#4-类型擦除" class="headerlink" title="4. 类型擦除"></a>4. 类型擦除</h2><p>当我们在使用泛型时没有指定类型，就会擦除泛型效果，举个栗子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 这是一个典型的类型擦除的例子，当我们在使用一个泛型类而没有指明类型，这时编译器为了不产生错误会自动将值（add 进去的数据）向上转型为 Object</span></div><div class="line">List list = <span class="keyword">new</span> ArrayList();</div><div class="line">list.add(<span class="string">"hello"</span>);</div><div class="line"><span class="keyword">int</span> i = (<span class="keyword">int</span>) list.get(<span class="number">0</span>);</div></pre></td></tr></table></figure></p>
-<h2 id="5-限制泛型类型"><a href="#5-限制泛型类型" class="headerlink" title="5. 限制泛型类型"></a>5. 限制泛型类型</h2><p>在某些情况下，我们需要使用泛型，但是又想对泛型的类型进行一些限制，可以这样来做<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">String</span>&gt; </span>&#123;  <span class="comment">// 这里的 extends 表示 T 被要求只能是 String 类型或 String 的子类或 String 的实现类（如果 String 是一个接口）</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">say</span><span class="params">(T t)</span> </span>&#123;</div><div class="line">        System.out.println(t);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h1 id="四、泛型实际编程中的例子"><a href="#四、泛型实际编程中的例子" class="headerlink" title="四、泛型实际编程中的例子"></a>四、泛型实际编程中的例子</h1><h2 id="1-框架或库"><a href="#1-框架或库" class="headerlink" title="1. 框架或库"></a>1. 框架或库</h2><p>泛型在各种框架或库中十分常见，比如在 <code>jdk</code> 中就有非常广的应用，比如集合类。</p>
-<h2 id="2-编写-Web-Api-时的应用"><a href="#2-编写-Web-Api-时的应用" class="headerlink" title="2. 编写 Web Api 时的应用"></a>2. 编写 Web Api 时的应用</h2><p>在编写 <code>restful api</code> 时，我们经常需要对数据进行包装然后以 <code>json</code> 或 <code>xml</code> 的形式返回给前端，设计比较良好的 <code>api</code> 通常会附带 <code>code</code> 和 <code>message</code> 以方便前端判断返回数据的情况。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 例如</span></div><div class="line">&#123;</div><div class="line">    <span class="string">"code"</span>: <span class="string">"-1"</span>,</div><div class="line">    <span class="string">"message"</span>: <span class="string">"没有权限"</span>,</div><div class="line">    <span class="string">"data"</span>: []</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>而我们返回的数据有非常多的类型，在定义每一种类型时，都需要在里面加上 <code>code</code> 和 <code>message</code> 两个属性。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 像这样</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> code;</div><div class="line">    <span class="keyword">private</span> String message;</div><div class="line">    </div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;</div><div class="line">    <span class="keyword">private</span> String username;</div><div class="line">    ……</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>有没有什么比较便捷的解决方试呢？这里就可以使用泛型进行简化。我们只需要定义一个 <code>Result</code> 泛型类。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Result</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">int</span> code;</div><div class="line">    <span class="keyword">public</span> String message;</div><div class="line">    <span class="keyword">public</span> T data;</div><div class="line">    </div><div class="line">    ……</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>这样，在那些类中就不需要都写上 <code>code</code> 和 <code>message</code> 两个属性了，每次用 <code>Result</code> 进行再包装一次就行了。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Result&lt;User&gt; userResult = <span class="keyword">new</span> Result&lt;User&gt;();</div><div class="line">userResult.setData(user);</div></pre></td></tr></table></figure></p>
-
+        <p class="article-more-link">
+          <a  href="/2016/11/07/Java泛型学习总结/#more">more >></a>
+        </p>
       
     </div>
     <div class="article-info article-info-index">
@@ -368,7 +313,7 @@ MathJax.Hub.Queue(function() {
     
     	<section class="tools-section tools-section-tag">
     			<div class="widget tagcloud" id="js-tagcloud">
-    				<a href="/tags/java/" style="font-size: 10px;">java</a>
+    				<a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/计算机网络/" style="font-size: 10px;">计算机网络</a>
     			</div>
     	</section>
     
