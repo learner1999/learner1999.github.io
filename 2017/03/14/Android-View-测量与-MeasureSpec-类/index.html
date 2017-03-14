@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>Android View 测量与 MeasureSpec 类 | 折腾</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言前段时间写一个项目，在布局中出现了 ScrollView 嵌套 ListView，导致 ListView 只能显示出第一个 item，在网上查了一下，发现其中一种解决方案代码量非常少，是通过自定义一个 ListView，覆写其中的 onMeasure() 方法。代码如下：12345protected void onMeasure(int widthMeasureSpec, int height">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android View 测量与 MeasureSpec 类">
+<meta property="og:url" content="http://yoursite.com/2017/03/14/Android-View-测量与-MeasureSpec-类/index.html">
+<meta property="og:site_name" content="折腾">
+<meta property="og:description" content="前言前段时间写一个项目，在布局中出现了 ScrollView 嵌套 ListView，导致 ListView 只能显示出第一个 item，在网上查了一下，发现其中一种解决方案代码量非常少，是通过自定义一个 ListView，覆写其中的 onMeasure() 方法。代码如下：12345protected void onMeasure(int widthMeasureSpec, int height">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/448065-7065a6f2f1cf59c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/320">
+<meta property="og:updated_time" content="2017-03-14T13:34:06.162Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android View 测量与 MeasureSpec 类">
+<meta name="twitter:description" content="前言前段时间写一个项目，在布局中出现了 ScrollView 嵌套 ListView，导致 ListView 只能显示出第一个 item，在网上查了一下，发现其中一种解决方案代码量非常少，是通过自定义一个 ListView，覆写其中的 onMeasure() 方法。代码如下：12345protected void onMeasure(int widthMeasureSpec, int height">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/448065-7065a6f2f1cf59c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/320">
+  
+    <link rel="alternative" href="/atom.xml" title="折腾" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="//favicon.png">
+  
+  <script src="/style.js"></script>
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="http://ww2.sinaimg.cn/large/0060lm7Tgw1f7wzgbud7mj30fu0fudiv.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">learner</a></h1>
+		</hgroup>
+
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/tags/java/">Java</a></li>
+	        
+				<li><a href="/tags/Android/">Android</a></li>
+	        
+				<li><a href="/tags/计算机网络/">计算机网络</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/learner1999" title="github">github</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">learner</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="http://ww2.sinaimg.cn/large/0060lm7Tgw1f7wzgbud7mj30fu0fudiv.jpg" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">learner</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/tags/java/">Java</a></li>
+		        
+					<li><a href="/tags/Android/">Android</a></li>
+		        
+					<li><a href="/tags/计算机网络/">计算机网络</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/learner1999" title="github">github</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-Android-View-测量与-MeasureSpec-类" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android View 测量与 MeasureSpec 类
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前段时间写一个项目，在布局中出现了 ScrollView 嵌套 ListView，导致 ListView 只能显示出第一个 item，在网上查了一下，发现其中一种解决方案代码量非常少，是通过自定义一个 ListView，覆写其中的 onMeasure() 方法。代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE &gt;&gt; <span class="number">2</span>,</div><div class="line">    MeasureSpec.AT_MOST);</div><div class="line">    <span class="keyword">super</span>.onMeasure(widthMeasureSpec, expandSpec);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>代码中最重要的地方就是将 View 的测量模式（mode）修改为 AT_MOST。</p>
+<a id="more"></a>
+<h2 id="View-的测量"><a href="#View-的测量" class="headerlink" title="View 的测量"></a>View 的测量</h2><p>Android 中的显示的按钮、文本框等组件，都是需要系统绘制出来的，而在绘制之前，系统就需要知道每一个组件的大小，宽高各是多少像素。而这些操作都是在 onMeasure() 方法中进行的，onMeasure() 方法可以得到 xml 布局文件中配置的宽高，然后可以自定义一些操作，最后调用 setMeasuredDimension() 方法。</p>
+<p>onMeasure(int widthMeasureSpec, int heightMeasureSpec) 方法有两个参数，这两个参数都是 int 型的。虽然说是 int 型的参数，但是每个参数都包含 2 个信息，例如 widthMeasureSpec 这个 int 值的高 2 位为测量的模式，低 30 位为测量的大小，也就是 View 的宽的大小。之所以使用 int 类型，而不是定义一个专门的类，Google 官方的解释如下：</p>
+<blockquote>
+<p>MeasureSpecs are implemented as ints to reduce object allocation.（减少对象分配）</p>
+</blockquote>
+<p>测量模式有三种：</p>
+<ul>
+<li>EXACTLY 精确模式<br>如果我们将 View 的 layout_width 属性或 layout_height 属性设置为 match_parent 或者具体的值，如 50 dp 等，这是，测量模式就会被指定为 EXACTLY。</li>
+<li>AT_MOST 最大值模式<br>当我们将 View 的 layout_width 属性或 layout_height 属性指定为 wrap_content，测量模式就会被指定为 AT_MOST，这时 View 大小会随着它的子 View 大小的变化而变化。</li>
+<li>UNSPECIFIED 不指定模式<br>一般系统不会指定该模式，只有在自定义 View 时才会使用。</li>
+</ul>
+<h2 id="MeasureSpec-类"><a href="#MeasureSpec-类" class="headerlink" title="MeasureSpec 类"></a>MeasureSpec 类</h2><p>MeasureSpec 类封装了一些对 MeasureSpecs（指 onMeasure() 方法参数，int 类型的那个值） 的一些操作，比如 getMode(int) 从 int 类型的值中取出测量模式（也就是高 2 位），getSize(int) 从 int 类型的值中取出长度值（也就是低 30 位），makeMeasureSpec(int size, int mode) 根据 size 和 mode 获得 MeasureSpecs（int 类型的值）。</p>
+<h2 id="demo"><a href="#demo" class="headerlink" title="demo"></a>demo</h2><p>写了一个 demo 来理解一下 View 测量的流程。</p>
+<p>先新建一个 MyTextView 继承自 TextView，覆写其中的 onMeasure() 方法。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</div><div class="line">    setMeasuredDimension(</div><div class="line">            measureWidth(widthMeasureSpec),</div><div class="line">            measureHeight(heightMeasureSpec)</div><div class="line">    );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">measureHeight</span><span class="params">(<span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> result = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> specMode = MeasureSpec.getMode(heightMeasureSpec);</div><div class="line">    <span class="keyword">int</span> specSize = MeasureSpec.getSize(heightMeasureSpec);</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (specMode == MeasureSpec.EXACTLY) &#123;</div><div class="line">        result = specSize;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        result = <span class="number">200</span>;</div><div class="line">        <span class="keyword">if</span> (specMode == MeasureSpec.AT_MOST) &#123;</div><div class="line">            result = Math.min(result, specSize);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">measureWidth</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> result = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> specMode = MeasureSpec.getMode(widthMeasureSpec);</div><div class="line">    <span class="keyword">int</span> specSize = MeasureSpec.getSize(widthMeasureSpec);</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (specMode == MeasureSpec.EXACTLY) &#123;</div><div class="line">        result = specSize;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        result = <span class="number">200</span>;</div><div class="line">        <span class="keyword">if</span> (specMode == MeasureSpec.AT_MOST) &#123;</div><div class="line">            result = Math.min(result, specSize);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后在布局中添加 3 个 MyTextView。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">cn.zheteng123.onmeasuretest.MyTextView</span></span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">    <span class="attr">android:background</span>=<span class="string">"#FF0000"</span>/&gt;</div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">cn.zheteng123.onmeasuretest.MyTextView</span></span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"50dp"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"50dp"</span></div><div class="line">    <span class="attr">android:background</span>=<span class="string">"#00FF00"</span>/&gt;</div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">cn.zheteng123.onmeasuretest.MyTextView</span></span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">    <span class="attr">android:background</span>=<span class="string">"#0000FF"</span></div><div class="line">    <span class="attr">android:text</span>=<span class="string">"12345678998765432112345699999999999999999999"</span>/&gt;</div></pre></td></tr></table></figure></p>
+<p>最终的效果是这样子的。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/448065-7065a6f2f1cf59c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/320" alt="demo 效果"></p>
+<p>可以看到第三个 TextView 比较特别，我们设置了宽度和长度为 wrap_content，但是它的宽度与高度并没有适应内容的长度。这是因为我们在覆写 onMeasure() 方法时，其中有一段是这样的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">result = <span class="number">200</span>;</div><div class="line"><span class="keyword">if</span> (specMode == MeasureSpec.AT_MOST) &#123;</div><div class="line">    result = Math.min(result, specSize);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>当设置布局宽度或高度为 wrap_content 时，测量模式就会是 AT_MOST，在代码中，我们将 TextView 的宽度和高度限制在了 200 以内，超过 200 仍然设置 200。</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2017/03/14/Android-View-测量与-MeasureSpec-类/" class="archive-article-date">
+  	<time datetime="2017-03-14T13:31:43.000Z" itemprop="datePublished"><i class="icon-clock"></i>2017-03-14</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2017/03/09/《图解 HTTP》笔记（一）一些网络的基本概念/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">《图解HTTP》笔记（一）一些网络的基本概念</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+	    <a class="jiathis_button_twitter"></a>
+	    <a class="jiathis_button_plus"></a> 
+	    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Android-View-测量与-MeasureSpec-类" data-title="Android View 测量与 MeasureSpec 类" data-url="http://yoursite.com/2017/03/14/Android-View-测量与-MeasureSpec-类/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"learner1999"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 learner
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/"
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/计算机网络/" style="font-size: 10px;">计算机网络</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

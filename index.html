@@ -46,6 +46,8 @@
 	        
 				<li><a href="/tags/java/">Java</a></li>
 	        
+				<li><a href="/tags/Android/">Android</a></li>
+	        
 				<li><a href="/tags/计算机网络/">计算机网络</a></li>
 	        
 			</ul>
@@ -99,6 +101,8 @@
 		        
 					<li><a href="/tags/java/">Java</a></li>
 		        
+					<li><a href="/tags/Android/">Android</a></li>
+		        
 					<li><a href="/tags/计算机网络/">计算机网络</a></li>
 		        
 				</ul>
@@ -116,6 +120,59 @@
 
       <div class="body-wrap">
         
+  
+    <article id="post-Android-View-测量与-MeasureSpec-类" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/14/Android-View-测量与-MeasureSpec-类/">Android View 测量与 MeasureSpec 类</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前段时间写一个项目，在布局中出现了 ScrollView 嵌套 ListView，导致 ListView 只能显示出第一个 item，在网上查了一下，发现其中一种解决方案代码量非常少，是通过自定义一个 ListView，覆写其中的 onMeasure() 方法。代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE &gt;&gt; <span class="number">2</span>,</div><div class="line">    MeasureSpec.AT_MOST);</div><div class="line">    <span class="keyword">super</span>.onMeasure(widthMeasureSpec, expandSpec);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>代码中最重要的地方就是将 View 的测量模式（mode）修改为 AT_MOST。</p>
+        <p class="article-more-link">
+          <a  href="/2017/03/14/Android-View-测量与-MeasureSpec-类/#more">more >></a>
+        </p>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2017/03/14/Android-View-测量与-MeasureSpec-类/" class="archive-article-date">
+  	<time datetime="2017-03-14T13:31:43.000Z" itemprop="datePublished"><i class="icon-clock"></i>2017-03-14</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
   
     <article id="post-《图解 HTTP》笔记（一）一些网络的基本概念" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -313,7 +370,7 @@ MathJax.Hub.Queue(function() {
     
     	<section class="tools-section tools-section-tag">
     			<div class="widget tagcloud" id="js-tagcloud">
-    				<a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/计算机网络/" style="font-size: 10px;">计算机网络</a>
+    				<a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/计算机网络/" style="font-size: 10px;">计算机网络</a>
     			</div>
     	</section>
     
