@@ -4,14 +4,20 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>Archives | 折腾</title>
+  <title>《图解 HTTP》笔记（三）HTTP 报文 | 折腾</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="折腾">
-<meta property="og:url" content="http://zheteng123.cn/archives/index.html">
+  <meta name="description" content="1. HTTP 报文一般 HTTP 报文分为「头部 header」和「主体 body」两部分，但是并不一定要有「主体」部分。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《图解 HTTP》笔记（三）HTTP 报文">
+<meta property="og:url" content="http://zheteng123.cn/2017/03/21/《图解-HTTP》笔记（三）HTTP-报文/index.html">
 <meta property="og:site_name" content="折腾">
+<meta property="og:description" content="1. HTTP 报文一般 HTTP 报文分为「头部 header」和「主体 body」两部分，但是并不一定要有「主体」部分。">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/448065-2f1ca6a74e7268b6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-03-21T14:01:40.379Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="折腾">
+<meta name="twitter:title" content="《图解 HTTP》笔记（三）HTTP 报文">
+<meta name="twitter:description" content="1. HTTP 报文一般 HTTP 报文分为「头部 header」和「主体 body」两部分，但是并不一定要有「主体」部分。">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/448065-2f1ca6a74e7268b6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
   
     <link rel="alternative" href="/atom.xml" title="折腾" type="application/atom+xml">
   
@@ -119,192 +125,138 @@
 </nav>
 
       <div class="body-wrap">
+        <article id="post-《图解-HTTP》笔记（三）HTTP-报文" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
         
   
+    <h1 class="article-title" itemprop="name">
+      《图解 HTTP》笔记（三）HTTP 报文
+    </h1>
   
+
+      </header>
     
-    
+    <div class="article-entry" itemprop="articleBody">
       
+        <h2 id="1-HTTP-报文"><a href="#1-HTTP-报文" class="headerlink" title="1. HTTP 报文"></a>1. HTTP 报文</h2><p>一般 HTTP 报文分为「头部 header」和「主体 body」两部分，但是并不一定要有「主体」部分。</p>
+<a id="more"></a>
+<p><img src="http://upload-images.jianshu.io/upload_images/448065-2f1ca6a74e7268b6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="HTTP 报文"></p>
+<p><strong>请求行</strong><br>包含请求的方法「GET」、请求路径「 <a href="http://zheteng123.cn/">http://zheteng123.cn/</a> 」、HTTP 版本「HTTP/1.1」。</p>
+<p><strong>状态行</strong><br>包含 HTTP 版本「HTTP/1.1」、 表明响应结果的状态码「200」、对应状态码的说明「OK」。</p>
+<p><strong>空行</strong><br>在报文中，为了能区分出头部和主体，在两者之间有一个空行将它们隔开。</p>
+<h2 id="2-编码提升传输效率"><a href="#2-编码提升传输效率" class="headerlink" title="2. 编码提升传输效率"></a>2. 编码提升传输效率</h2><p>常用的编码方式有：</p>
+<ul>
+<li>gzip（GNU zip）最常用</li>
+<li>compress（UNIX 系统的标准压缩）</li>
+<li>deflate（zlib）</li>
+<li>identity（不进行编码）</li>
+</ul>
+<h2 id="3-发送多种数据"><a href="#3-发送多种数据" class="headerlink" title="3. 发送多种数据"></a>3. 发送多种数据</h2><p>MIME（Multipurpose Internet Mail Extensions，多用途因特网邮件扩展）机制，它允许邮件处理文本、图片、视频等多个不同类型的数据。</p>
+<p>多部分对象集合包含的对象如下。<br><strong>multipart/form-data</strong><br>在 Web 表单文件上传时使用。<br><strong>multipart/byteranges</strong><br>状态码 206（Partial Content，部分内容）响应报文包含了多个范围的内容时使用。</p>
+<h2 id="4-获取部分内容的范围请求（断点续传）"><a href="#4-获取部分内容的范围请求（断点续传）" class="headerlink" title="4. 获取部分内容的范围请求（断点续传）"></a>4. 获取部分内容的范围请求（断点续传）</h2><ul>
+<li><strong>5001~10 000 字节</strong><br><code>Range: bytes=5001-10000</code></li>
+<li><strong>从 5001 字节之后全部的</strong><br><code>Range: bytes=5001-</code></li>
+<li><strong>从一开始到 3000 字节和 5000~7000 字节的多重范围</strong><br><code>Range: bytes=-3000, 5000-7000</code></li>
+</ul>
+<p>响应会返回状态码为 206 Partial Content 的响应报文。另外，对于多重范围的范围请求，响应会在首部字段 Content-Type 标明 multipart/byteranges 后返回响应报文。<br>如果服务器端无法响应范围请求，则会返回状态码 200 OK 和完整的实体内容。</p>
+<h1 id="5-内容协商"><a href="#5-内容协商" class="headerlink" title="5. 内容协商"></a>5. 内容协商</h1><p>内容协商会以响应资源的语言、字符集、编码方式等作为判断的基准。<br>请求头中可以包含以下字段来作为服务器判断标准：</p>
+<ul>
+<li>Accept</li>
+<li>Accept-Charset</li>
+<li>Accept-Encoding</li>
+<li>Accept-Language</li>
+<li>Content-Language</li>
+</ul>
+<p>内容协商技术有以下 3 种类型：</p>
+<ul>
+<li>服务器驱动协商（Server-driven Negotiation）由服务器根据请求头判断</li>
+<li>客户端驱动协商（Agent-driven Negotiation）由客户端手动选择</li>
+<li>透明协商（Transparent Negotiation）有服务器和客户端共同决定</li>
+</ul>
+
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/03/21/《图解-HTTP》笔记（三）HTTP-报文/" class="archive-article-date">
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2017/03/21/《图解-HTTP》笔记（三）HTTP-报文/" class="archive-article-date">
   	<time datetime="2017-03-21T14:00:25.000Z" itemprop="datePublished"><i class="icon-clock"></i>2017-03-21</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/03/21/《图解-HTTP》笔记（三）HTTP-报文/">《图解 HTTP》笔记（三）HTTP 报文</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/计算机网络/">计算机网络</a></li></ul>
 	</div>
 
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/03/15/《图解-HTTP》笔记（二）HTTP-协议/" class="archive-article-date">
-  	<time datetime="2017-03-15T06:10:14.000Z" itemprop="datePublished"><i class="icon-clock"></i>2017-03-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/03/15/《图解-HTTP》笔记（二）HTTP-协议/">《图解 HTTP》笔记（二）HTTP 协议</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/计算机网络/">计算机网络</a></li></ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/03/14/Android-View-测量与-MeasureSpec-类/" class="archive-article-date">
-  	<time datetime="2017-03-14T13:31:43.000Z" itemprop="datePublished"><i class="icon-clock"></i>2017-03-14</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/03/14/Android-View-测量与-MeasureSpec-类/">Android View 测量与 MeasureSpec 类</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/03/09/《图解 HTTP》笔记（一）一些网络的基本概念/" class="archive-article-date">
-  	<time datetime="2017-03-09T05:56:17.000Z" itemprop="datePublished"><i class="icon-clock"></i>2017-03-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/03/09/《图解 HTTP》笔记（一）一些网络的基本概念/">《图解HTTP》笔记（一）一些网络的基本概念</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/计算机网络/">计算机网络</a></li></ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
       
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/11/07/Java泛型学习总结/" class="archive-article-date">
-  	<time datetime="2016-11-07T00:58:02.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-07</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/11/07/Java泛型学习总结/">Java泛型学习总结</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-  
-    </div></section>
-  
 
-    
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2017/03/15/《图解-HTTP》笔记（二）HTTP-协议/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">《图解 HTTP》笔记（二）HTTP 协议</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+	    <a class="jiathis_button_twitter"></a>
+	    <a class="jiathis_button_plus"></a> 
+	    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="《图解-HTTP》笔记（三）HTTP-报文" data-title="《图解 HTTP》笔记（三）HTTP 报文" data-url="http://zheteng123.cn/2017/03/21/《图解-HTTP》笔记（三）HTTP-报文/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"learner1999"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
 
 
       </div>
@@ -327,8 +279,8 @@
 		mathjax: true,
 		animate: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
